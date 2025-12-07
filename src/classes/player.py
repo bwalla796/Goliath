@@ -5,7 +5,7 @@ class Player():
         self.y = y
         self.health = 10
         self.max_health = 10
-        self.weapon = 3
+        self.weapon = 5
         self.armor = 0
         self.monsters_slain = 0
 

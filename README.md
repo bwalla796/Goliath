@@ -1,1 +1,3 @@
-- A simple ASCII rougelike game for your command line.
+- A simple ASCII rougelike game for your command line. Built in Python using the curses library.
+- Run ./build.sh within the toplevel of this directory to load the game.
+- Updates in pipeline are as follows; special abilities, relics after boss fights, combat animations, monster and boss sprites.

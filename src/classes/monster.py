@@ -1,10 +1,10 @@
 import curses
 class Monster():
-    def __init__(self, x, y):
+    def __init__(self, x, y, max_health, weapon, armor):
         self.x = x
         self.y = y
-        self.health = 10
-        self.max_health = 10
+        self.max_health = max_health
+        self.health = self.max_health
         self.weapon = 3
         self.armor = 0
 

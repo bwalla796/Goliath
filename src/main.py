@@ -103,13 +103,19 @@ def main(stdscr):
     player = Player(current_pos_x, current_pos_y)
     player.draw(stdscr)
 
-    monster = Monster(MAX_X - 8, current_pos_y)    
+    mon_health = 10
+    mon_armor = 0
+    mon_weapon = 3
+    monster = Monster(MAX_X - 8, current_pos_y, mon_health, mon_weapon, mon_armor)    
 
     stage = Round(1)
 
     while True:
         c = stdscr.getch()
         
+        if (stage.round_int % 5 == 0) :
+            stdscr.addstr(4, MAX_X // 2 - len("Project David") // 2, "Goliath appears...", curses.A_BOLD)
+
         player.undraw(stdscr)
         player.draw(stdscr)
         monsters_count = 1
@@ -129,7 +135,14 @@ def main(stdscr):
                 player.improve_health()
             player.health = player.max_health    
             stage.next()
-            monster = Monster(MAX_X - 8, current_pos_y)       
+            mon_health += 10 
+            mon_armor += 2
+            mon_weapon += 2
+            if (stage.round_int % 5 == 0):
+                mon_weapon += 2
+                mon_health *= 2
+            
+            monster = Monster(MAX_X - 8, current_pos_y, mon_health, mon_weapon, mon_armor)       
         
         stdscr.clear() 
         stdscr.refresh()
