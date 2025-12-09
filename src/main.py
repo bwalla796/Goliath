@@ -32,6 +32,8 @@ def main_menu(stdscr):
         elif key == ord('q'):
             return "Quit"
 
+#def display_page_title(stdscr)            
+
 def display_shop_menu(stdscr, destroy=False, abilities=False):
     if not abilities:
         options = ["+Weapon", "+Armor", "+Health", "Pass"]
@@ -132,7 +134,7 @@ def main(stdscr):
             is_boss_round = stage.round_int % 5 == 0
             selected_in_shop = display_shop_menu(stdscr, False, is_boss_round)
             if is_boss_round:
-                #Todo: Add upgrades to abilities upon repeat selection
+                #Todo: Add upgrades to abilities upon repeat selection, create child classes for abilities?
                 if selected_in_shop != "Pass":
                     player.addAbility(selected_in_shop)
             else:    
@@ -143,10 +145,11 @@ def main(stdscr):
                 elif selected_in_shop == "+Health":
                     player.improve_health()
             player.health = player.max_health    
+            player.cbt_last_chose = 0
             stage.next()
-            mon_health += 10 
-            mon_armor += 2
-            mon_weapon += 2
+            mon_health += 5 
+            mon_armor += 1
+            mon_weapon += 1
             if (stage.round_int % 5 == 0):
                 mon_weapon += 2
                 mon_health *= 2

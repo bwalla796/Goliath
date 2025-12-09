@@ -5,8 +5,8 @@ class Monster():
         self.y = y
         self.max_health = max_health
         self.health = self.max_health
-        self.weapon = 3
-        self.armor = 0
+        self.weapon = weapon
+        self.armor = armor
         self.conditions = []
 
     def undraw(self, scr):
@@ -26,9 +26,9 @@ class Monster():
         scr.addstr(self.y + 1, self.x + 1, "?", curses.color_pair(2))
 
     def renderHealthCounter(self, scr):
-        scr.addstr(4, self.x - 1, "               ", curses.color_pair(3))
+        scr.addstr(4, self.x - 8, "                                                        ", curses.color_pair(3))
         scr.refresh()   
-        scr.addstr(4, self.x - 1, f"{self.health}/{self.max_health}", curses.color_pair(3))    
+        scr.addstr(4, self.x - 8, f"!{self.weapon} <{self.armor}> {self.health}/{self.max_health}", curses.color_pair(3))    
 
     def improve_armor(self):
         self.armor += 1

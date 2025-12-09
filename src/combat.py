@@ -10,27 +10,32 @@ def handleCombat(scr, player, monster, stage):
     player.renderHealthCounter(scr)
     monster.draw(scr)
     monster.renderHealthCounter(scr)
+    abils_counter = Counter(player.abilities)
+    player_abils_sorted = sorted(list(set(abilities)))
     while monster.health > 0 and player.health > 0:
-        attack_choice = display_combat_menu(scr, False, player.abilities)
+        attack_choice = display_combat_menu(scr, False, player.abilities, player.cbt_last_chose)
+        player.cbt_last_chose = attack_choice
         display_combat_menu(scr, True)
-        if attack_choice == "Attack":
+        if player_abils_sorted[attack_choice] == "Attack":
             monster.health = monster.health - (player.weapon - monster.armor if player.weapon - monster.armor > 0 else 0)
-        elif attack_choice == "Fireball":
-            monster.health = monster.health - (25 - monster.armor if player.weapon - monster.armor > 0 else 0)    
-        elif attack_choice == "Defend":
+        elif player_abils_sorted[attack_choice] == "Fireball":
+            monster.health = monster.health - ((25 * abils_counter["Fireball"]) - monster.armor if (25 * abils_counter["Fireball"]) - monster.armor > 0 else 0)    
+        elif player_abils_sorted[attack_choice] == "Defend":
             player.armor *= 2
-        elif attack_choice == "Acid Splash":
+        elif player_abils_sorted[attack_choice] == "Acid Splash":
             monster.health = monster.health - (player.weapon // 2) 
-        elif attack_choice == "Poison Gas": 
-            monster.health = monster.health - ((player.weapon // 5) - monster.armor if (player.weapon // 5) - monster.armor > 0 else 0) 
-            monster.add_condition("Poisoned")     
+        elif player_abils_sorted[attack_choice] == "Poison Gas": 
+            monster.health = monster.health - ((player.weapon // 5) - monster.armor if (player.weapon // 5) - monster.armor > 0 else 0)
+            for i in range(0, abils_counter["Poison Gas"]):
+                monster.add_condition("Poisoned")
+                i += 1   
 
         if monster.health > 0:
             conditions_counts = Counter(monster.conditions)
             #Todo: need to turn conditions into a list of objects that contains the duration of the condition
             monster.health = monster.health - conditions_counts["Poisoned"]
             player.health = player.health - (monster.weapon - player.armor if monster.weapon - player.armor > 0 else 0)
-            if attack_choice == "Defend":
+            if player.abilities[attack_choice] == "Defend":
                 player.armor //= 2
             if player.health > 0:
                 player.renderHealthCounter(scr)
@@ -39,8 +44,8 @@ def handleCombat(scr, player, monster, stage):
 
 
 
-def display_combat_menu(stdscr, destroy=False, abilities=[]):
-    options = ["Attack", "Defend"] + abilities
+def display_combat_menu(stdscr, destroy=False, abilities=[], default_index=0):
+    options = sorted(list(set(abilities)))
     selected_index = 0
     
     MAX_Y, MAX_X = stdscr.getmaxyx()
@@ -51,6 +56,7 @@ def display_combat_menu(stdscr, destroy=False, abilities=[]):
     for _ in range(len(options) + 2):
         stdscr.clrtoeol()
 
+    selected_index = default_index
     if not destroy:
         while True:
             for i, option in enumerate(options):
@@ -72,4 +78,4 @@ def display_combat_menu(stdscr, destroy=False, abilities=[]):
             elif key == curses.KEY_DOWN and selected_index < len(options) - 1:
                 selected_index += 1
             elif key in [curses.KEY_ENTER, 10, 13]: 
-                return options[selected_index]     
+                return selected_index    

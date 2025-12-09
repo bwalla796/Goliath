@@ -21,4 +21,4 @@ def print_menu(stdscr, selected_row_idx, menu_options, start_y):
         else:
             stdscr.addstr(y, x, option)
 
-    stdscr.refresh()
+    stdscr.refresh()    
