@@ -11,7 +11,7 @@ def handleCombat(scr, player, monster, stage):
     monster.draw(scr)
     monster.renderHealthCounter(scr)
     abils_counter = Counter(player.abilities)
-    player_abils_sorted = sorted(list(set(abilities)))
+    player_abils_sorted = sorted(list(set(player.abilities)))
     while monster.health > 0 and player.health > 0:
         attack_choice = display_combat_menu(scr, False, player.abilities, player.cbt_last_chose)
         player.cbt_last_chose = attack_choice
