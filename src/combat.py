@@ -1,3 +1,4 @@
+import random
 from helpers import print_menu
 from classes.player import Player
 from classes.round import Round
@@ -29,6 +30,11 @@ def handleCombat(scr, player, monster, stage):
             for i in range(0, abils_counter["Poison Gas"]):
                 monster.add_condition("Poisoned")
                 i += 1   
+        elif player_abils_sorted[attack_choice] == "Dark Ritual":        
+            monster.armor = monster.armor - (5 * abils_counter["Dark Ritual"])
+            monster.weapon = monster.weapon + (2 * abils_counter["Dark Ritual"])
+        elif player_abils_sorted[attack_choice] == "Birdshot":
+            monster.health = monster.health - (player.weapon * (6 + (abils_counter["Birdshot"])) - monster.armor if (player.weapon * (6 + (abils_counter["Birdshot"]))) - monster.armor > 0 else 0)
 
         if monster.health > 0:
             conditions_counts = Counter(monster.conditions)
@@ -45,7 +51,10 @@ def handleCombat(scr, player, monster, stage):
 
 
 def display_combat_menu(stdscr, destroy=False, abilities=[], default_index=0):
-    options = sorted(list(set(abilities)))
+    if len(abilities) > 3:
+        options = sorted(random.sample(list(set(abilities)), k=3))
+    else:
+        options = sorted(list(set(abilities)))
     selected_index = 0
     
     MAX_Y, MAX_X = stdscr.getmaxyx()

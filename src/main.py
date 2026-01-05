@@ -1,5 +1,6 @@
 import curses
 import math
+import random
 from classes.player import Player
 from classes.monster import Monster
 from classes.round import Round
@@ -38,7 +39,7 @@ def display_shop_menu(stdscr, destroy=False, abilities=False):
     if not abilities:
         options = ["+Weapon", "+Armor", "+Health", "Pass"]
     else:
-        options = ["Fireball", "Poison Gas", "Acid Splash", "Pass"]
+        options = random.sample(["Fireball", "Poison Gas", "Acid Splash", "Dark Ritual", "Birdshot"], k=3) + ["Pass"]
     selected_index = 0
     
     MAX_Y, MAX_X = stdscr.getmaxyx()
