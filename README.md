@@ -1,6 +1,6 @@
 # Goliath
 
-## An ASCII rougelike game for your CLI
+## An ASCII roguelike game for your CLI
 
 ### Why did I build Goliath?
 
